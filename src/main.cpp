@@ -37,8 +37,8 @@ WUPS_USE_WUT_DEVOPTAB();
 #define VINO_CONFIG_PATH "/vol/content/vino_config.txt"
 #define VINO_CONFIG_SD_PATH "/vol/external01/TVii/vino_config.txt"
 
-#define CONNECT_TO_LATTE_CONFIG_ID "connect_to_latte"
-#define CONNECT_TO_LATTE_DEFUALT_VALUE true
+#define CONNECT_TO_ROSE_CONFIG_ID "connect_to_rose"
+#define CONNECT_TO_ROSE_DEFUALT_VALUE true
 
 #define REPLACE_DLM_CONFIG_ID "replace_download_management"
 #define REPLACE_DLM_DEFAULT_VALUE false
@@ -46,16 +46,16 @@ WUPS_USE_WUT_DEVOPTAB();
 FSMountSource mSource;
 char mPath[128] = "";
 
-bool connectToLatte = true;
+bool connectToRose = true;
 bool replaceDownloadManagement = false;
 bool needRelaunch = false;
 
-void connectToLatteChanged(ConfigItemBoolean *item, bool newValue) {
-  if (newValue != connectToLatte) {
-    WUPSStorageAPI::Store(CONNECT_TO_LATTE_CONFIG_ID, newValue);
+void connectToRoseChanged(ConfigItemBoolean *item, bool newValue) {
+  if (newValue != connectToRose) {
+    WUPSStorageAPI::Store(CONNECT_TO_ROSE_CONFIG_ID, newValue);
   }
 
-  connectToLatte = newValue;
+  connectToRose = newValue;
 }
 
 void replaceDownloadManagementChanged(ConfigItemBoolean *item, bool newValue) {
@@ -73,8 +73,8 @@ ConfigMenuOpenedCallback(WUPSConfigCategoryHandle rootHandle) {
 
   try {
     root.add(WUPSConfigItemBoolean::Create(
-        CONNECT_TO_LATTE_CONFIG_ID, "Config Patch Enabled",
-        CONNECT_TO_LATTE_DEFUALT_VALUE, connectToLatte, connectToLatteChanged));
+        CONNECT_TO_ROSE_CONFIG_ID, "Config Patch Enabled",
+        CONNECT_TO_ROSE_DEFUALT_VALUE, connectToRose, connectToRoseChanged));
     root.add(WUPSConfigItemBoolean::Create(
         REPLACE_DLM_CONFIG_ID, "Replace Download Management",
         REPLACE_DLM_DEFAULT_VALUE, replaceDownloadManagement,
@@ -109,8 +109,8 @@ INITIALIZE_PLUGIN() {
 
   WUPSStorageError storageRes;
   if ((storageRes = WUPSStorageAPI::GetOrStoreDefault(
-           CONNECT_TO_LATTE_CONFIG_ID, connectToLatte,
-           CONNECT_TO_LATTE_DEFUALT_VALUE)) != WUPS_STORAGE_ERROR_SUCCESS) {
+           CONNECT_TO_ROSE_CONFIG_ID, connectToRose,
+           CONNECT_TO_ROSE_DEFUALT_VALUE)) != WUPS_STORAGE_ERROR_SUCCESS) {
     DEBUG_FUNCTION_LINE("GetOrStoreDefault failed: %s (%d)",
                         WUPSStorageAPI_GetStatusStr(storageRes), storageRes);
   }
@@ -125,10 +125,10 @@ INITIALIZE_PLUGIN() {
     DEBUG_FUNCTION_LINE("NotificationModule_InitLibrary failed :(");
   }
 
-  if (connectToLatte) {
-    ShowNotification("TVii patch enabled");
+  if (connectToRose) {
+    ShowNotification("Rosè patch enabled");
   } else {
-    ShowNotification("TVii patch disabled");
+    ShowNotification("Rosè patch disabled");
   }
 }
 
@@ -198,7 +198,7 @@ DECL_FUNCTION(int32_t, _SYSSwitchToOverlayFromHBM, SysAppPFID pfid) {
 DECL_FUNCTION(FSStatus, FSOpenFile, FSClient *client, FSCmdBlock *block,
               const char *path, const char *mode, FSFileHandle *handle,
               FSErrorFlag errorMask) {
-  if (connectToLatte) {
+  if (connectToRose) {
     if (strcmp(VINO_CONFIG_PATH, path) == 0) {
       // Applets need to mount the SD card to access files on it :P
       FSGetMountSource(client, block, FS_MOUNT_SOURCE_SD, &mSource,
