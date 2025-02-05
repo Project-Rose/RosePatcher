@@ -59,7 +59,7 @@ EnableAc:1
 EnableEventLock:1
 
 # User Agent Setting
-# UserAgent_String: Mozilla/5.0 (Nintendo WiiU) AppleWebKit/534.52 (KHTML, like Gecko) NX/
+# UserAgent_String: Mozilla/5.0 (Nintendo WiiU) AppleWebKit/534.52 (KHTML, like Gecko) NX/2.2.0.8.21 vn/1.1.JP
 # 0/1/2/3 WhiteList Setting.
 # 0:None    (vino does not use white-list)
 # 1:File    (vino uses white-list on file, path is written at 'WhiteList_Path')
