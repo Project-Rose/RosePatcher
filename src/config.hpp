@@ -17,6 +17,9 @@
 #define TVII_ICON_WUM_PATCH_COFNIG_ID "tvii_icon_wum_patch"
 #define TVII_ICON_WUM_PATCH_DEFAULT_VALUE true
 
+#define PATCH_WWP_COFNIG_ID "tvii_icon_wwp_patch"
+#define PATCH_WWP_DEFUALT_VALUE true
+
 #define FORCE_JPN_CONSOLE_CONFIG_ID "force_jpn_console"
 #define FORCE_JPN_CONSOLE_DEFAULT_VALUE false
 
@@ -27,12 +30,14 @@ namespace config {
     extern bool connectToRose;
     extern bool tviiIconHBM;
     extern bool tviiIconWUM;
-    extern bool needRelaunch;
+    extern bool patchWWP;
     extern bool forceJPNconsole;
+    extern bool needRelaunch;
 
     void connectToRoseChanged(ConfigItemBoolean *item, bool newValue);
     void tviiIconHBMChanged(ConfigItemBoolean *item, bool newValue);
     void tviiIconWUMChanged(ConfigItemBoolean *item, bool newValue);
+    void patchWWPChanged(ConfigItemBoolean *item, bool newValue);
 
     WUPSConfigAPICallbackStatus ConfigMenuOpenedCallback(WUPSConfigCategoryHandle rootHandle);
     

@@ -95,12 +95,12 @@ namespace patches::icon {
     }
 }; // namespace icon
 
-DECL_FUNCTION(int, FSOpenFile, FSClient *pClient, FSCmdBlock *pCmd, const char *path, const char *mode, int *handle, int error) {
+DECL_FUNCTION(int, FSOpenFile_TVii, FSClient *pClient, FSCmdBlock *pCmd, const char *path, const char *mode, int *handle, int error) {
     if (strcmp("/vol/content/Common/Package/Hbm2-2.pack", path) == 0) {
         patches::icon::perform_hbm_patches(config::tviiIconHBM);
     }
     
-    return real_FSOpenFile(pClient, pCmd, path, mode, handle, error);;
+    return real_FSOpenFile_TVii(pClient, pCmd, path, mode, handle, error);;
 }
 
-WUPS_MUST_REPLACE_FOR_PROCESS(FSOpenFile, WUPS_LOADER_LIBRARY_COREINIT, FSOpenFile, WUPS_FP_TARGET_PROCESS_ALL);
+WUPS_MUST_REPLACE_FOR_PROCESS(FSOpenFile_TVii, WUPS_LOADER_LIBRARY_COREINIT, FSOpenFile, WUPS_FP_TARGET_PROCESS_ALL);

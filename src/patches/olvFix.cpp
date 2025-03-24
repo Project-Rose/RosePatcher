@@ -31,14 +31,14 @@ namespace patches::olv {
         }
     }
 
-    DECL_FUNCTION(int, FSOpenFile, FSClient *pClient, FSCmdBlock *pCmd,
+    DECL_FUNCTION(int, FSOpenFile_OLV, FSClient *pClient, FSCmdBlock *pCmd,
                   const char *path, const char *mode, int *handle, int error) {
         if (strcmp("/vol/content/vino_config.txt", path) == 0) {
             OSDynLoad_AddNotifyCallback(&osdynload_notify_callback, nullptr);
         }
 
-        return real_FSOpenFile(pClient, pCmd, path, mode, handle, error);;
+        return real_FSOpenFile_OLV(pClient, pCmd, path, mode, handle, error);;
     }
 
-    WUPS_MUST_REPLACE_FOR_PROCESS(FSOpenFile, WUPS_LOADER_LIBRARY_COREINIT, FSOpenFile, WUPS_FP_TARGET_PROCESS_TVII);
+    WUPS_MUST_REPLACE_FOR_PROCESS(FSOpenFile_OLV, WUPS_LOADER_LIBRARY_COREINIT, FSOpenFile, WUPS_FP_TARGET_PROCESS_TVII);
 } // namespace olv

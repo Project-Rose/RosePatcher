@@ -75,4 +75,34 @@ namespace utils {
     bool is555OrHigher() {
         return getSystemVersion().major == 5 && getSystemVersion().minor == 5 && getSystemVersion().patch >= 5 && (getSystemVersion().region == 'U' || getSystemVersion().region == 'E' || getSystemVersion().region == 'J');
     }
+
+    nn::swkbd::LanguageType getConsoleLanguage() {
+        static std::optional<nn::swkbd::LanguageType> cachedLanguage{};
+        if (cachedLanguage) return *cachedLanguage;
+
+        UCHandle handle = UCOpen();
+        if (handle < 0) {
+            return nn::swkbd::LanguageType::English;
+        }
+
+        nn::swkbd::LanguageType language;
+        UCSysConfig settings = {
+            .name = "cafe.language",
+            .access = 0,
+            .dataType = UC_DATATYPE_UNSIGNED_INT,
+            .error = UC_ERROR_OK,
+            .dataSize = sizeof(language),
+            .data = &language,
+        };
+
+        UCError err = UCReadSysConfig(handle, 1, &settings);
+        UCClose(handle);
+        
+        if (err != UC_ERROR_OK) {
+            return nn::swkbd::LanguageType::English;
+        }
+
+        cachedLanguage = language;
+        return language;
+    }
 }; // namespace utils
