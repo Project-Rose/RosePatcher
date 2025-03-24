@@ -3,10 +3,13 @@
 
 #include <coreinit/title.h>
 #include <coreinit/mcp.h>
+#include <coreinit/userconfig.h>
+#include <nn/swkbd.h>
 
 #include <cstring>
 #include <string>
 #include <vector>
+#include <optional>
 
 namespace utils {
     bool isVinoClientID(const char *client_id);
@@ -22,4 +25,6 @@ namespace utils {
     bool isEuropeConsole();
 
     bool is555OrHigher();
+
+    nn::swkbd::LanguageType getConsoleLanguage();
 }; // namespace utils

@@ -19,6 +19,7 @@ namespace config {
   bool connectToRose = CONNECT_TO_ROSE_DEFUALT_VALUE;
   bool tviiIconHBM = TVII_ICON_HBM_PATCH_DEFAULT_VALUE;
   bool tviiIconWUM = TVII_ICON_WUM_PATCH_DEFAULT_VALUE;
+  bool patchWWP = PATCH_WWP_DEFUALT_VALUE;
   bool forceJPNconsole = FORCE_JPN_CONSOLE_DEFAULT_VALUE;
   bool needRelaunch = false;
 
@@ -51,6 +52,18 @@ namespace config {
     }
   }
 
+  void patchWWPChanged(ConfigItemBoolean *item, bool newValue) {
+    if (patchWWP != newValue) {
+      WUPSStorageAPI::Store(PATCH_WWP_COFNIG_ID, newValue);
+    }
+
+    patchWWP = newValue;
+    auto title = OSGetTitleID();
+    if (utils::isWiiUMenuTitleID(title, false)) {
+      needRelaunch = true;
+    }
+  }
+
   // Open event for the Aroma config menu
   WUPSConfigAPICallbackStatus ConfigMenuOpenedCallback(WUPSConfigCategoryHandle rootHandle) {
     WUPSConfigCategory root = WUPSConfigCategory(rootHandle);
@@ -65,6 +78,9 @@ namespace config {
         root.add(WUPSConfigItemBoolean::Create(TVII_ICON_HBM_PATCH_COFNIG_ID, "Add TVii Icon to the \ue073 Menu", TVII_ICON_HBM_PATCH_DEFAULT_VALUE, tviiIconHBM, tviiIconHBMChanged));
         root.add(WUPSConfigItemBoolean::Create(TVII_ICON_WUM_PATCH_COFNIG_ID, "Add TVii Icon to the Wii U Menu", TVII_ICON_WUM_PATCH_DEFAULT_VALUE, tviiIconWUM, tviiIconWUMChanged));
         root.add(WUPSConfigItemStub::Create("Note: Wii U Menu will restart if \"Add TVii Icon to the Wii U Menu\""));
+        root.add(WUPSConfigItemStub::Create("is toggled."));
+        root.add(WUPSConfigItemBoolean::Create(PATCH_WWP_COFNIG_ID, "Add TVii Icon to Wara Wara Plaza", PATCH_WWP_DEFUALT_VALUE, patchWWP, patchWWPChanged));
+        root.add(WUPSConfigItemStub::Create("Note: Wii U Menu will restart if \"Add TVii Icon to Wara Wara Plaza\""));
         root.add(WUPSConfigItemStub::Create("is toggled."));
       }
     } catch (std::exception &e) {

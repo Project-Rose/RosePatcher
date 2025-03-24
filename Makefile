@@ -22,7 +22,7 @@ WUMS_ROOT := $(DEVKITPRO)/wums
 TARGET		:=	RosePatcher
 BUILD		:=	build
 SOURCES		:=	src src/utils src/patches
-DATA		:=	data
+DATA		:=	data data/1stNUP/Us data/1stNUP/Eu
 INCLUDES	:=	src
 
 #-------------------------------------------------------------------------------
@@ -106,51 +106,49 @@ clean:
 	@rm -fr $(BUILD) $(TARGET).wps $(TARGET).elf
 
 #-------------------------------------------------------------------------------
-run: # need wiiload + wiiload plugin on the Wii U (get plugin at https://aroma.foryour.cafe/)
-#            ^^^^ (I don't know if it comes pre-installed with devkitpro without having the wii portion installed, so you can also get it from the hackmii installer https://bootmii.org/download)
+run: # need wiiload + wiiload plugin on the Wii U
 	@wiiload $(TARGET).wps
 
 #-------------------------------------------------------------------------------
 else
-.PHONY:	all
+.PHONY: all
 
 DEPENDS	:=	$(OFILES:.o=.d)
 
 #-------------------------------------------------------------------------------
 # main targets
 #-------------------------------------------------------------------------------
-all	:	$(OUTPUT).wps
+all	: $(OUTPUT).wps
 
-$(OUTPUT).wps	:	$(OUTPUT).elf
-$(OUTPUT).elf	:	$(OFILES)
+$(OUTPUT).wps	: $(OUTPUT).elf
+$(OUTPUT).elf	: $(OFILES)
 
 $(OFILES_SRC)	: $(HFILES_BIN)
 
 #-------------------------------------------------------------------------------
 # you need a rule like this for each extension you use as binary data
 #-------------------------------------------------------------------------------
-%.bin.o	%_bin.h :	%.bin
-#-------------------------------------------------------------------------------
+%.bin.o	%_bin.h : %.bin
 	@echo $(notdir $<)
 	@$(bin2o)
 
-%.txt.o	%_txt.h :	%.txt
-#-------------------------------------------------------------------------------
+%.txt.o	%_txt.h : %.txt
 	@echo $(notdir $<)
 	@$(bin2o)
 
-%.der.o	%_der.h :	%.der
-#-------------------------------------------------------------------------------
+%.der.o	%_der.h : %.der
 	@echo $(notdir $<)
 	@$(bin2o)
 
-%.pem.o	%_pem.h :	%.pem
-#-------------------------------------------------------------------------------
+%.pem.o	%_pem.h : %.pem
+	@echo $(notdir $<)
+	@$(bin2o)
+
+%.xml.o	%_xml.h : %.xml
 	@echo $(notdir $<)
 	@$(bin2o)
 
 -include $(DEPENDS)
-
 
 #-------------------------------------------------------------------------------
 endif
