@@ -49,6 +49,7 @@ INITIALIZE_PLUGIN() {
 }
 
 DEINITIALIZE_PLUGIN() {
+  token::resetTokens();
   curl_global_cleanup();
   patches::icon::perform_hbm_patches(false);
 

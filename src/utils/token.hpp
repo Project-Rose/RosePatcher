@@ -8,5 +8,6 @@ namespace token
 
     void setReplacementToken(std::string token, nn::act::SlotNo slot);
     void initToken();
+    void resetTokens();
     void updCurrentToken();
 } // namespace token

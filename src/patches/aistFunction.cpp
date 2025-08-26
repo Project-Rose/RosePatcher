@@ -24,14 +24,19 @@ DECL_FUNCTION(int, AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4, uint8_
     if (client_id && utils::isVinoClientID(client_id) && config::connectToRose) {
         AISTCallCount++;
         DEBUG_FUNCTION_LINE("AISTCallCount is %d!", AISTCallCount);
+
         patches::ssl::addCertificateToWebKit();
-        DEBUG_FUNCTION_LINE("Faking service sucess for '%s' (should be Vino)", client_id);
-        DEBUG_FUNCTION_LINE("Size: %d", token::currentReplacementToken.size());
+
+        DEBUG_FUNCTION_LINE("Replacing token with %s", token::currentReplacementToken.c_str());
 	    memcpy(token, token::currentReplacementToken.c_str(), token::currentReplacementToken.size());
+		DEBUG_FUNCTION_LINE("Patched %s", token);
+
+        DEBUG_FUNCTION_LINE("Faking service sucess for '%s' (should be Vino)", client_id);
         return 0;
     }
 
     DEBUG_FUNCTION_LINE("Not faking - calling real");
+
     // make sure we set the token again in case the following replaces it just in case
     return real_AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4(token, client_id);
 }
