@@ -1,5 +1,3 @@
-#include <algorithm>
-#include <format>
 #include <wups.h>
 #include <wups/config.h>
 #include <wups/config/WUPSConfigCategory.h>
@@ -67,7 +65,7 @@ namespace config {
       // Add setting items
       root.add(WUPSConfigItemStub::Create("-- General --"));
       root.add(WUPSConfigItemBoolean::Create(CONNECT_TO_ROSE_CONFIG_ID, "Connect to Rosé", CONNECT_TO_ROSE_DEFUALT_VALUE, connectToRose, connectToRoseChanged));
-      
+
       if (!utils::isJapanConsole()) {
         root.add(WUPSConfigItemStub::Create("-- TVii Icons --"));
         root.add(WUPSConfigItemBoolean::Create(TVII_ICON_HBM_PATCH_COFNIG_ID, "Add TVii Icon to the \ue073 Menu", TVII_ICON_HBM_PATCH_DEFAULT_VALUE, tviiIconHBM, tviiIconHBMChanged));
@@ -114,7 +112,7 @@ namespace config {
     if ((storageRes = WUPSStorageAPI::GetOrStoreDefault(TVII_ICON_WUM_PATCH_COFNIG_ID, tviiIconWUM, TVII_ICON_WUM_PATCH_DEFAULT_VALUE)) != WUPS_STORAGE_ERROR_SUCCESS) {
       DEBUG_FUNCTION_LINE("GetOrStoreDefault failed: %s (%d)", WUPSStorageAPI_GetStatusStr(storageRes), storageRes);
     }
-    
+
     // For when we can't detect someones console region and their console region is actually Japan
     if ((storageRes = WUPSStorageAPI::GetOrStoreDefault(FORCE_JPN_CONSOLE_CONFIG_ID, forceJPNconsole, FORCE_JPN_CONSOLE_DEFAULT_VALUE)) != WUPS_STORAGE_ERROR_SUCCESS) {
       DEBUG_FUNCTION_LINE("GetOrStoreDefault failed: %s (%d)", WUPSStorageAPI_GetStatusStr(storageRes), storageRes);
