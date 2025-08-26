@@ -4,6 +4,7 @@
 #include <wups.h>
 #include <wups/storage.h>
 #include <coreinit/bsp.h>
+#include <coreinit/cache.h>
 #include <coreinit/launch.h>
 #include <coreinit/mcp.h>
 #include <coreinit/title.h>
@@ -106,7 +107,7 @@ namespace token {
             ShowNotification("Rose: Failed to get Wii U Settings. You will not be able to launch TVii. Try again via rebooting.");
             return;
         }
-        
+
         memcpy(codeId, settings.code_id, sizeof(settings.code_id));
         memcpy(serialId, settings.serial_id, sizeof(settings.serial_id));
 
@@ -120,6 +121,9 @@ namespace token {
                 DEBUG_FUNCTION_LINE("Slot %d not occupied", i);
                 return;
             }
+
+			// may help with instability issues?
+			OSMemoryBarrier();
 
             nn::act::GetPrincipalIdEx(&pid, i);
             DEBUG_FUNCTION_LINE("index %d, pid: %d", i, pid);

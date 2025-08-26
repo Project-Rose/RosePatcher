@@ -104,6 +104,9 @@ DECL_FUNCTION(nn::Result, LoadConsoleAccount__Q2_2nn3actFUc13ACTLoadOptionPCcb, 
   // we should load first
   nn::Result ret = real_LoadConsoleAccount__Q2_2nn3actFUc13ACTLoadOptionPCcb(slot, unk1, unk2, unk3);
 
+  // Could be a new or removed user. TODO: isolate which function new users are called/deleted
+  token::initToken();
+
   token::updCurrentToken();
 
   return ret;
