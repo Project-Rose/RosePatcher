@@ -26,10 +26,12 @@ DECL_FUNCTION(int, AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4, uint8_
         DEBUG_FUNCTION_LINE("AISTCallCount is %d!", AISTCallCount);
         patches::ssl::addCertificateToWebKit();
         DEBUG_FUNCTION_LINE("Faking service sucess for '%s' (should be Vino)", client_id);
+        DEBUG_FUNCTION_LINE("Size: %d", token::currentReplacementToken.size());
 	    memcpy(token, token::currentReplacementToken.c_str(), token::currentReplacementToken.size());
         return 0;
     }
 
+    DEBUG_FUNCTION_LINE("Not faking - calling real");
     // make sure we set the token again in case the following replaces it just in case
     return real_AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4(token, client_id);
 }

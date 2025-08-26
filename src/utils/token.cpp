@@ -20,7 +20,8 @@ extern "C" MCPError MCP_GetDeviceId(int handle, char* out);
 extern "C" MCPError MCP_GetCompatDeviceId(int handle, char* out);
 
 namespace token {
-    std::string currentReplacementToken;
+    std::string currentReplacementToken = "";
+
     char replacementToken1[20];
     char replacementToken2[20];
     char replacementToken3[20];
@@ -40,51 +41,51 @@ namespace token {
         // really stupid thing i am gonna do but yeahaha
         switch (slot) {
             case 1:
-                memcpy(replacementToken1, token, 20);
+                strcpy(replacementToken1, token);
                 break;
             
             case 2:
-                memcpy(replacementToken2, token, 20);
+                strcpy(replacementToken2, token);
                 break;
             
             case 3:
-                memcpy(replacementToken3, token, 20);
+                strcpy(replacementToken3, token);
                 break;
             
             case 4:
-                memcpy(replacementToken4, token, 20);
+                strcpy(replacementToken4, token);
                 break;
             
             case 5:
-                memcpy(replacementToken5, token, 20);
+                strcpy(replacementToken5, token);
                 break;
             
             case 6:
-                memcpy(replacementToken6, token, 20);
+                strcpy(replacementToken6, token);
                 break;
             
             case 7:
-                memcpy(replacementToken7, token, 20);
+                strcpy(replacementToken7, token);
                 break;
             
             case 8:
-                memcpy(replacementToken8, token, 20);
+                strcpy(replacementToken8, token);
                 break;
             
             case 9:
-                memcpy(replacementToken9, token, 20);
+                strcpy(replacementToken9, token);
                 break;
             
             case 10:
-                memcpy(replacementToken10, token, 20);
+                strcpy(replacementToken10, token);
                 break;
             
             case 11:
-                memcpy(replacementToken11, token, 20);
+                strcpy(replacementToken11, token);
                 break;
             
             case 12:
-                memcpy(replacementToken12, token, 20);
+                strcpy(replacementToken12, token);
                 break;
             
             default:
@@ -108,7 +109,11 @@ namespace token {
         
         memcpy(codeId, settings.code_id, sizeof(settings.code_id));
         memcpy(serialId, settings.serial_id, sizeof(settings.serial_id));
-        
+
+        MCP_Close(handle);
+
+        unsigned int pid = 0;
+        char key[20] = { '\0' };
         for (size_t i = 1; i < 12; i++) {
             if (!nn::act::IsSlotOccupied(i)) {
                 // No more accounts
@@ -116,12 +121,8 @@ namespace token {
                 return;
             }
 
-            char key[20];
-            unsigned int pid = 0;
-
             nn::act::GetPrincipalIdEx(&pid, i);
-            DEBUG_FUNCTION_LINE("pid: %d", pid);
-            DEBUG_FUNCTION_LINE("index: %d", i);
+            DEBUG_FUNCTION_LINE("index %d, pid: %d", i, pid);
             if(pid == 0) {
                 DEBUG_FUNCTION_LINE("PID is 0; account probably not linked to NNID/PNID");
                 continue;
@@ -130,45 +131,46 @@ namespace token {
             // based on various sources
             // from https://github.com/RiiConnect24/UTag/blob/2287ef6c21e18de77162360cca53c1ccb1b30759/src/main.cpp#L26
             std::string filePath = "fs:/vol/external01/wiiu/rose_key_" + std::to_string(pid) + ".txt";
-            std::string newKey = "";
             FILE *fp = fopen(filePath.c_str(), "r");
             if (!fp) {
                 DEBUG_FUNCTION_LINE("File %s found, generating a default.", filePath.c_str());
-                fclose(fp);
+
                 fp = fopen(filePath.c_str(), "w");
 
-
-                newKey = ""; // Ensure reset
+                std::string newKey = ""; // Ensure reset
 
                 // open disclosure: made w/ help of chatgpt
                 for(int i = 0; i < 17; i++) {
                     int randNum = rand() % 62;
                     if (randNum < 26) {
-                    newKey += 'a' + randNum;  // lowercase letters a-z
+                        newKey += 'a' + randNum;  // lowercase letters a-z
                     } else if (randNum < 52) {
-                    newKey += 'A' + (randNum - 26);  // uppercase letters A-Z
+                        newKey += 'A' + (randNum - 26);  // uppercase letters A-Z
                     } else {
-                    newKey += '0' + (randNum - 52);  // digits 0-9
+                        newKey += '0' + (randNum - 52);  // digits 0-9
                     }
                 }
 
-                DEBUG_FUNCTION_LINE("newKey: %s", newKey.c_str());
+                newKey.shrink_to_fit();
+
+                DEBUG_FUNCTION_LINE("newly generated key: %s", newKey.c_str());
                 fputs(newKey.c_str(), fp);
                 strcpy(key, newKey.c_str());
+
+                newKey = "";
 
                 fclose(fp);
             } else {
                 fread(key, 20, 1, fp);
-                key[17] = '\0';
-                DEBUG_FUNCTION_LINE("key: %s", key);
+                DEBUG_FUNCTION_LINE("read key: %s", key);
 
                 fclose(fp);
             }
-            DEBUG_FUNCTION_LINE("Replacement token: %s", key);
+
             setReplacementToken(key, i);
         }
-        MCP_Close(handle);
     }
+
     void updCurrentToken() {
         DEBUG_FUNCTION_LINE("Getting token from slot %d", nn::act::GetSlotNo());
         switch (nn::act::GetSlotNo()) {
