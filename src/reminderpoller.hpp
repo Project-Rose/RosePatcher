@@ -4,7 +4,7 @@
 
 #pragma once
 namespace reminderpoller {
-    extern bool running;
-    extern bool should_kill;
-    void CreateReminderPoller();
-}
+extern bool running;
+extern bool should_kill;
+void CreateReminderPoller();
+} // namespace reminderpoller
