@@ -115,7 +115,7 @@ namespace token {
 
         unsigned int pid = 0;
         char key[20] = { '\0' };
-        for (size_t i = 1; i < 12; i++) {
+        for (size_t i = 1; i <= 12; i++) {
             if (!nn::act::IsSlotOccupied(i)) {
                 // No more accounts
                 DEBUG_FUNCTION_LINE("Slot %d not occupied", i);
