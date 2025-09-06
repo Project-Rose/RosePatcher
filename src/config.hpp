@@ -22,24 +22,25 @@
 #define FORCE_JPN_CONSOLE_CONFIG_ID "force_jpn_console"
 #define FORCE_JPN_CONSOLE_DEFAULT_VALUE false
 
+
+
 namespace config {
 
-extern bool connectToRose;
-extern bool tviiIconHBM;
-extern bool tviiIconWUM;
-extern bool needRelaunch;
-extern bool forceJPNconsole;
-extern bool certificateAdded;
-extern bool gtsAdded;
-extern bool enableRemindPoll;
+    extern bool connectToRose;
+    extern bool tviiIconHBM;
+    extern bool tviiIconWUM;
+    extern bool needRelaunch;
+    extern bool forceJPNconsole;
+    extern bool certificateAdded;
+    extern bool gtsAdded;
+    extern bool enableRemindPoll;
 
-void connectToRoseChanged(ConfigItemBoolean *item, bool newValue);
-void tviiIconHBMChanged(ConfigItemBoolean *item, bool newValue);
-void tviiIconWUMChanged(ConfigItemBoolean *item, bool newValue);
+    void connectToRoseChanged(ConfigItemBoolean *item, bool newValue);
+    void tviiIconHBMChanged(ConfigItemBoolean *item, bool newValue);
+    void tviiIconWUMChanged(ConfigItemBoolean *item, bool newValue);
 
-WUPSConfigAPICallbackStatus
-ConfigMenuOpenedCallback(WUPSConfigCategoryHandle rootHandle);
-
-void ConfigMenuClosedCallback();
-void InitializeConfig();
+    WUPSConfigAPICallbackStatus ConfigMenuOpenedCallback(WUPSConfigCategoryHandle rootHandle);
+    
+    void ConfigMenuClosedCallback();
+    void InitializeConfig();
 } // namespace config

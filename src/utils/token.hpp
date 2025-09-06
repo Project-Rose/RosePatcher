@@ -1,12 +1,12 @@
 #pragma once
-#include <nn/act/client_cpp.h>
 #include <wups.h>
+#include <nn/act/client_cpp.h>
 
-namespace token {
-extern std::string currentReplacementToken;
+namespace token
+{
+    extern std::string currentReplacementToken;
 
-void setReplacementToken(std::string token, nn::act::SlotNo slot);
-void initToken();
-void updCurrentToken();
-void resetTokens();
+    void setReplacementToken(std::string token, nn::act::SlotNo slot);
+    void initToken();
+    void updCurrentToken();
 } // namespace token

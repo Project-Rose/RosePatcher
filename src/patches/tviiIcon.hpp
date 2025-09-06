@@ -1,6 +1,6 @@
 #pragma once
-#include <coreinit/dynload.h>
 #include <wups.h>
+#include <coreinit/dynload.h>
 
 #include <cstring>
 #include <string>
@@ -9,9 +9,9 @@
 #include "../utils/patch.hpp"
 
 namespace patches::icon {
-extern const char root_rpx_check[];
+    extern const char root_rpx_check[];
 
-void perform_men_patches(bool enable);
+    void perform_men_patches(bool enable);
 
-void perform_hbm_patches(bool enable);
-}; // namespace patches::icon
+    void perform_hbm_patches(bool enable);
+}; // namespace icon

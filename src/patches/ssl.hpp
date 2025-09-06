@@ -4,5 +4,5 @@
 #include "../utils/logger.h"
 
 namespace patches::ssl {
-void addCertificateToWebKit();
-}; // namespace patches::ssl
+    void addCertificateToWebKit();
+}; // namespace ssl

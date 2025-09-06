@@ -17,8 +17,7 @@
 #include "utils/token.hpp"
 
 WUPS_PLUGIN_NAME("Rosé Patcher");
-WUPS_PLUGIN_DESCRIPTION(
-    "Patcher for Project Rosé's Nintendo TVii revival service.");
+WUPS_PLUGIN_DESCRIPTION("Patcher for Project Rosé's Nintendo TVii revival service.");
 WUPS_PLUGIN_VERSION("v1.2.3");
 WUPS_PLUGIN_AUTHOR("Project Rosé Team");
 WUPS_PLUGIN_LICENSE("GPLv2");
@@ -53,37 +52,38 @@ DEINITIALIZE_PLUGIN() {
   curl_global_cleanup();
   patches::icon::perform_hbm_patches(false);
 
-  // nn::act::Finalize();
-  token::resetTokens();
-  // WHBLogModuleDeinit();
-  // WHBLogUdpDeinit();
-  // WHBLogCafeDeinit();
-  // NotificationModule_DeInitLibrary();
-  // FunctionPatcher_DeInitLibrary();
+  nn::act::Finalize();
+  WHBLogModuleDeinit();
+  WHBLogUdpDeinit();
+  WHBLogCafeDeinit();
+  NotificationModule_DeInitLibrary();
+  FunctionPatcher_DeInitLibrary();
 }
 
 ON_APPLICATION_START() {
+  WHBLogModuleInit();
+  WHBLogUdpInit();
+  WHBLogCafeInit();
+
   nn::ac::Initialize();
   nn::ac::ConnectAsync();
   nn::act::Initialize();
 
   auto title = OSGetTitleID();
   if (config::tviiIconWUM) {
-    if (title == 0x5001010040000 || title == 0x5001010040100 ||
-        title == 0x5001010040200) {
+    if (title == 0x5001010040000 || title == 0x5001010040100 || title == 0x5001010040200) {
       patches::icon::perform_men_patches(true);
     }
   }
 
   if (config::enableRemindPoll) {
-    reminderpoller::CreateReminderPoller();
+      reminderpoller::CreateReminderPoller();
   }
 }
 
 ON_APPLICATION_ENDS() {
   auto title = OSGetTitleID();
-  if (title == 0x5001010040000 || title == 0x5001010040100 ||
-      title == 0x5001010040200) {
+  if (title == 0x5001010040000 || title == 0x5001010040100 || title == 0x5001010040200) {
     patches::icon::perform_men_patches(false);
   }
 
@@ -93,22 +93,16 @@ ON_APPLICATION_ENDS() {
 }
 
 // ensure we update
-DECL_FUNCTION(nn::Result, LoadConsoleAccount__Q2_2nn3actFUc13ACTLoadOptionPCcb,
-              nn::act::SlotNo slot, nn::act::ACTLoadOption unk1,
-              char const *unk2, bool unk3) {
-  DEBUG_FUNCTION_LINE("called laod console acc slot %d", slot);
+DECL_FUNCTION(nn::Result, LoadConsoleAccount__Q2_2nn3actFUc13ACTLoadOptionPCcb, nn::act::SlotNo slot, nn::act::ACTLoadOption unk1, char const * unk2, bool unk3) {
   // we should load first
-  nn::Result ret = real_LoadConsoleAccount__Q2_2nn3actFUc13ACTLoadOptionPCcb(
-      slot, unk1, unk2, unk3);
+  nn::Result ret = real_LoadConsoleAccount__Q2_2nn3actFUc13ACTLoadOptionPCcb(slot, unk1, unk2, unk3);
 
-  // Could be a new or removed user. TODO: isolate which function new users are
-  // called/deleted token::initToken();
+  // Could be a new or removed user. TODO: isolate which function new users are called/deleted
+  token::initToken();
 
   token::updCurrentToken();
 
   return ret;
 }
 
-WUPS_MUST_REPLACE(LoadConsoleAccount__Q2_2nn3actFUc13ACTLoadOptionPCcb,
-                  WUPS_LOADER_LIBRARY_NN_ACT,
-                  LoadConsoleAccount__Q2_2nn3actFUc13ACTLoadOptionPCcb);
+WUPS_MUST_REPLACE(LoadConsoleAccount__Q2_2nn3actFUc13ACTLoadOptionPCcb, WUPS_LOADER_LIBRARY_NN_ACT, LoadConsoleAccount__Q2_2nn3actFUc13ACTLoadOptionPCcb);
