@@ -51,7 +51,6 @@ DECL_FUNCTION(void, NSSLInit) {
     WHBLogModuleInit();
     WHBLogUdpInit();
     WHBLogCafeInit();
-    //token::updCurrentToken();
 
 
     // Notify about the patch

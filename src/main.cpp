@@ -36,6 +36,8 @@ INITIALIZE_PLUGIN() {
   curl_global_init(CURL_GLOBAL_DEFAULT);
   config::InitializeConfig();
 
+  token::initToken();
+
   // Check if NotificationModule library is initialized
   if (NotificationModule_InitLibrary() != NOTIFICATION_MODULE_RESULT_SUCCESS) {
     DEBUG_FUNCTION_LINE("NotificationModule_InitLibrary failed");
@@ -68,6 +70,8 @@ ON_APPLICATION_START() {
   nn::ac::Initialize();
   nn::ac::ConnectAsync();
   nn::act::Initialize();
+
+  token::updCurrentToken();
 
   auto title = OSGetTitleID();
   if (config::tviiIconWUM) {
