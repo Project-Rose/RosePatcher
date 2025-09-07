@@ -12,6 +12,7 @@
 #include <sysapp/launch.h>
 #include <sysapp/title.h>
 
+#include "config.hpp"
 #include "token.hpp"
 #include "utils/utils.hpp"
 #include "utils/logger.h"
@@ -178,51 +179,51 @@ namespace token {
         DEBUG_FUNCTION_LINE("Getting token from slot %d", nn::act::GetSlotNo());
         switch (nn::act::GetSlotNo()) {
             case 1:
-                currentReplacementToken = std::format("[{}, {}, {}]", replacementToken1, codeId, serialId);
+                currentReplacementToken = std::format("[{}, {}, {}, {}]", replacementToken1, codeId, serialId, VERSION);
                 break;
 
             case 2:
-                currentReplacementToken = std::format("[{}, {}, {}]", replacementToken2, codeId, serialId);
+                currentReplacementToken = std::format("[{}, {}, {}, {}]", replacementToken2, codeId, serialId, VERSION);
                 break;
 
             case 3:
-                currentReplacementToken = std::format("[{}, {}, {}]", replacementToken3, codeId, serialId);
+                currentReplacementToken = std::format("[{}, {}, {}, {}]", replacementToken3, codeId, serialId, VERSION);
                 break;
 
             case 4:
-                currentReplacementToken = std::format("[{}, {}, {}]", replacementToken4, codeId, serialId);
+                currentReplacementToken = std::format("[{}, {}, {}, {}]", replacementToken4, codeId, serialId, VERSION);
                 break;
 
             case 5:
-                currentReplacementToken = std::format("[{}, {}, {}]", replacementToken5, codeId, serialId);
+                currentReplacementToken = std::format("[{}, {}, {}, {}]", replacementToken5, codeId, serialId, VERSION);
                 break;
 
             case 6:
-                currentReplacementToken = std::format("[{}, {}, {}]", replacementToken6, codeId, serialId);
+                currentReplacementToken = std::format("[{}, {}, {}, {}]", replacementToken6, codeId, serialId, VERSION);
                 break;
 
             case 7:
-                currentReplacementToken = std::format("[{}, {}, {}]", replacementToken7, codeId, serialId);
+                currentReplacementToken = std::format("[{}, {}, {}, {}]", replacementToken7, codeId, serialId, VERSION);
                 break;
 
             case 8:
-                currentReplacementToken = std::format("[{}, {}, {}]", replacementToken8, codeId, serialId);
+                currentReplacementToken = std::format("[{}, {}, {}, {}]", replacementToken8, codeId, serialId, VERSION);
                 break;
 
             case 9:
-                currentReplacementToken = std::format("[{}, {}, {}]", replacementToken9, codeId, serialId);
+                currentReplacementToken = std::format("[{}, {}, {}, {}]", replacementToken9, codeId, serialId, VERSION);
                 break;
 
             case 10:
-                currentReplacementToken = std::format("[{}, {}, {}]", replacementToken10, codeId, serialId);
+                currentReplacementToken = std::format("[{}, {}, {}, {}]", replacementToken10, codeId, serialId, VERSION);
                 break;
 
             case 11:
-                currentReplacementToken = std::format("[{}, {}, {}]", replacementToken11, codeId, serialId);
+                currentReplacementToken = std::format("[{}, {}, {}, {}]", replacementToken11, codeId, serialId, VERSION);
                 break;
 
             case 12:
-                currentReplacementToken = std::format("[{}, {}, {}]", replacementToken12, codeId, serialId);
+                currentReplacementToken = std::format("[{}, {}, {}, {}]", replacementToken12, codeId, serialId, VERSION);
                 break;
 
             default:

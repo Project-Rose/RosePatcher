@@ -22,7 +22,7 @@
 #define FORCE_JPN_CONSOLE_CONFIG_ID "force_jpn_console"
 #define FORCE_JPN_CONSOLE_DEFAULT_VALUE false
 
-
+#define VERSION "v1.2.3"
 
 namespace config {
 
@@ -40,7 +40,7 @@ namespace config {
     void tviiIconWUMChanged(ConfigItemBoolean *item, bool newValue);
 
     WUPSConfigAPICallbackStatus ConfigMenuOpenedCallback(WUPSConfigCategoryHandle rootHandle);
-    
+
     void ConfigMenuClosedCallback();
     void InitializeConfig();
 } // namespace config
