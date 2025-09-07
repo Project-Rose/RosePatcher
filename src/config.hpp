@@ -22,7 +22,7 @@
 #define FORCE_JPN_CONSOLE_CONFIG_ID "force_jpn_console"
 #define FORCE_JPN_CONSOLE_DEFAULT_VALUE false
 
-#define VERSION "v1.2.3"
+#define VERSION "v1.2.4"
 
 namespace config {
 
