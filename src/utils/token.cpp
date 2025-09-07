@@ -44,56 +44,56 @@ namespace token {
             case 1:
                 strcpy(replacementToken1, token);
                 break;
-            
+
             case 2:
                 strcpy(replacementToken2, token);
                 break;
-            
+
             case 3:
                 strcpy(replacementToken3, token);
                 break;
-            
+
             case 4:
                 strcpy(replacementToken4, token);
                 break;
-            
+
             case 5:
                 strcpy(replacementToken5, token);
                 break;
-            
+
             case 6:
                 strcpy(replacementToken6, token);
                 break;
-            
+
             case 7:
                 strcpy(replacementToken7, token);
                 break;
-            
+
             case 8:
                 strcpy(replacementToken8, token);
                 break;
-            
+
             case 9:
                 strcpy(replacementToken9, token);
                 break;
-            
+
             case 10:
                 strcpy(replacementToken10, token);
                 break;
-            
+
             case 11:
                 strcpy(replacementToken11, token);
                 break;
-            
+
             case 12:
                 strcpy(replacementToken12, token);
                 break;
-            
+
             default:
                 break;
         }
     }
-    
+
     void initToken() {
         // enable RNG in case we need it.
         srand(time(NULL));
@@ -117,9 +117,8 @@ namespace token {
         char key[20] = { '\0' };
         for (size_t i = 1; i <= 12; i++) {
             if (!nn::act::IsSlotOccupied(i)) {
-                // No more accounts
                 DEBUG_FUNCTION_LINE("Slot %d not occupied", i);
-                return;
+                continue;
             }
 
 			// may help with instability issues?
@@ -165,7 +164,7 @@ namespace token {
 
                 fclose(fp);
             } else {
-                fread(key, 20, 1, fp);
+                fgets(key, 20, fp);
                 DEBUG_FUNCTION_LINE("read key: %s", key);
 
                 fclose(fp);
@@ -181,51 +180,51 @@ namespace token {
             case 1:
                 currentReplacementToken = std::format("[{}, {}, {}]", replacementToken1, codeId, serialId);
                 break;
-            
+
             case 2:
                 currentReplacementToken = std::format("[{}, {}, {}]", replacementToken2, codeId, serialId);
                 break;
-            
+
             case 3:
                 currentReplacementToken = std::format("[{}, {}, {}]", replacementToken3, codeId, serialId);
                 break;
-            
+
             case 4:
                 currentReplacementToken = std::format("[{}, {}, {}]", replacementToken4, codeId, serialId);
                 break;
-            
+
             case 5:
                 currentReplacementToken = std::format("[{}, {}, {}]", replacementToken5, codeId, serialId);
                 break;
-            
+
             case 6:
                 currentReplacementToken = std::format("[{}, {}, {}]", replacementToken6, codeId, serialId);
                 break;
-            
+
             case 7:
                 currentReplacementToken = std::format("[{}, {}, {}]", replacementToken7, codeId, serialId);
                 break;
-            
+
             case 8:
                 currentReplacementToken = std::format("[{}, {}, {}]", replacementToken8, codeId, serialId);
                 break;
-            
+
             case 9:
                 currentReplacementToken = std::format("[{}, {}, {}]", replacementToken9, codeId, serialId);
                 break;
-            
+
             case 10:
                 currentReplacementToken = std::format("[{}, {}, {}]", replacementToken10, codeId, serialId);
                 break;
-            
+
             case 11:
                 currentReplacementToken = std::format("[{}, {}, {}]", replacementToken11, codeId, serialId);
                 break;
-            
+
             case 12:
                 currentReplacementToken = std::format("[{}, {}, {}]", replacementToken12, codeId, serialId);
                 break;
-            
+
             default:
                 break;
         }
