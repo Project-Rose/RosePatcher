@@ -27,9 +27,7 @@ WUPS_USE_WUT_DEVOPTAB();
 
 INITIALIZE_PLUGIN() {
   // Initialize libraries
-  WHBLogModuleInit();
-  WHBLogUdpInit();
-  WHBLogCafeInit();
+  initLogging();
   nn::act::Initialize();
   FunctionPatcher_InitLibrary();
 
@@ -55,17 +53,13 @@ DEINITIALIZE_PLUGIN() {
   patches::icon::perform_hbm_patches(false);
 
   nn::act::Finalize();
-  WHBLogModuleDeinit();
-  WHBLogUdpDeinit();
-  WHBLogCafeDeinit();
+  deinitLogging();
   NotificationModule_DeInitLibrary();
   FunctionPatcher_DeInitLibrary();
 }
 
 ON_APPLICATION_START() {
-  WHBLogModuleInit();
-  WHBLogUdpInit();
-  WHBLogCafeInit();
+  initLogging();
 
   nn::ac::Initialize();
   nn::ac::ConnectAsync();

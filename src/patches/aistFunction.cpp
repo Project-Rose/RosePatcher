@@ -48,13 +48,10 @@ DECL_FUNCTION(void, NSSLInit) {
     real_NSSLInit();
 
     // Init Logging Functions
-    WHBLogModuleInit();
-    WHBLogUdpInit();
-    WHBLogCafeInit();
-
+    initLogging();
 
     // Notify about the patch
-    DEBUG("Rosé Patcher: Trying to patch AcquireIndependentServiceToken via NSSLInit\n");
+    DEBUG_FUNCTION_LINE("Rosé Patcher: Trying to patch AcquireIndependentServiceToken via NSSLInit\n");
 
     FunctionPatcher_IsFunctionPatched(AISTpatchHandleBetter, &isAlreadyPatched);
 
@@ -91,7 +88,7 @@ DECL_FUNCTION(void, NSSLInit) {
     AISTaddress = OSEffectiveToPhysical(AISTaddressVIR); // Get the virtual address
 
     // Show results of the AcquireIndependentServiceToken function address findings
-    // DEBUG("AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4 results\n"
+    // DEBUG_FUNCTION_LINE("AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4 results\n"
                  // "Rosé Patcher:   Physical Address: %d\n"
                  // "Rosé Patcher:   Virtual Address: %d\n"
                  // "Rosé Patcher: -- END OF AcquireIndependentServiceToken ADDRESS RESULTS --",
@@ -120,7 +117,7 @@ DECL_FUNCTION(void, NSSLInit) {
     }
 
     // Notify about the patch success
-    DEBUG("Patched AcquireIndependentServiceToken via NSSLInit");
+    DEBUG_FUNCTION_LINE("Patched AcquireIndependentServiceToken via NSSLInit");
     OSDynLoad_Release(NN_ACT);
 }
 

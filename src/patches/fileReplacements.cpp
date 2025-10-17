@@ -16,7 +16,7 @@ DECL_FUNCTION(FSStatus, FSOpenFile_VINO, FSClient *client, FSCmdBlock *block,
               const char *path, const char *mode, FSFileHandle *handle,
               FSErrorFlag errorMask) {
 
-    // DEBUG("Wii U wants to open file: %s", path);
+    // DEBUG_FUNCTION_LINE("Wii U wants to open file: %s", path);
 
     if (config::connectToRose && strcmp(VINO_CONFIG_PATH, path) == 0) {
         FSStatus res = real_FSOpenFile_VINO(client, block, path, mode, handle, errorMask);
@@ -44,7 +44,7 @@ DECL_FUNCTION(FSStatus, FSReadFile_VINO, FSClient *client, FSCmdBlock *block, ui
 
 DECL_FUNCTION(FSStatus, FSCloseFile_VINO, FSClient *client, FSCmdBlock *block, FSFileHandle handle, FSErrorFlag errorMask) {
     if (handle == config_handle) {
-        DEBUG("Closing Vino config file and resetting handle");
+        DEBUG_FUNCTION_LINE("Closing Vino config file and resetting handle");
         config_handle.reset();
     }
 
