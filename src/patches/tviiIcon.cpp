@@ -60,9 +60,7 @@ namespace patches::icon {
     }
 
     void perform_hbm_patches(bool enable) {
-        WHBLogUdpInit();
-        WHBLogCafeInit();
-        WHBLogModuleInit();
+        initLogging();
 
         if (utils::isJapanConsole()) {
             DEBUG_FUNCTION_LINE("Japan console detected, skipping hbm patches");

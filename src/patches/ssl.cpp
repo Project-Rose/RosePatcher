@@ -44,7 +44,7 @@ namespace patches::ssl {
 DECL_FUNCTION(NSSLError, NSSLAddServerPKI, NSSLContextHandle context, NSSLServerCertId pki) {
     if (config::connectToRose && !config::gtsAdded) {
         NSSLAddServerPKIExternal(context, gts_der, gts_der_size, 0);
-        // DEBUG("Added GTS certificate to NSSL context. code: %d", ret);
+        // DEBUG_FUNCTION_LINE("Added GTS certificate to NSSL context. code: %d", ret);
         config::gtsAdded = true;
     }
 
