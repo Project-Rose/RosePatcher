@@ -18,7 +18,7 @@ Alternatively, you can install it manually. Download the [latest release](https:
 # Configuration
 Hold L + Down + Start to open the Wii U Plugin Menu, then scroll down and click Rosé Patcher. From here, there are several things that you can configure:
 - **Connect to Rosé** - Patches the TVii applet to connect to Project Rosé's TVii revival.
-- **Add TVii icon to the HOME Menu** - Adds the TVii icon to the HOME menu bar on the bottom of the screen.
+- **Add TVii icon to the HOME Menu** - Adds the TVii icon to the HOME Menu bar on the bottom of the screen.
 - **Add TVii icon to the Wii U Menu** - Adds the TVii icon to Wii U Menu suspend bar on the bottom of the screen. Your console will restart if you change this setting.
 An Aroma notification should tell you if the patch is enabled every time you boot up your console.
 
@@ -37,3 +37,4 @@ An Aroma notification should tell you if the patch is enabled every time you boo
 We were not able to detect your console region automaticly. On your SD card, go to `sd:/wiiu/environments/aroma/plugins/config`, and then open the the file named `rosepatcher.json`. After you have opened the file, change the `force_jpn_console` value from `false` to `true`.
 
 For other support questions, please ask in our [Discord server](https://discord.gg/AaTsXndGu).
+
