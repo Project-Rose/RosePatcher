@@ -1,6 +1,6 @@
 
 # Rosé Patcher
-<img width="1000" height="250" alt="rosepatchergithub" src="https://github.com/user-attachments/assets/71c9b5e2-b006-4153-9992-f524a289038f" />
+<img width="1000" height="250" alt="Rosé Patcher by Project Rosé (README banner)" src="https://github.com/user-attachments/assets/71c9b5e2-b006-4153-9992-f524a289038f" />
 
 [![GitHub release](https://img.shields.io/github/release/Project-Rose/RosePatcher.svg)](https://github.com/Project-Rose/RosePatcher/releases) [![Services Health](https://projectrose.montastic.io/badge)](https://projectrose.montastic.io) 
 
@@ -37,4 +37,5 @@ An Aroma notification should tell you if the patch is enabled every time you boo
 We were not able to detect your console region automaticly. On your SD card, go to `sd:/wiiu/environments/aroma/plugins/config`, and then open the the file named `rosepatcher.json`. After you have opened the file, change the `force_jpn_console` value from `false` to `true`.
 
 For other support questions, please ask in our [Discord server](https://discord.gg/AaTsXndGu).
+
 
