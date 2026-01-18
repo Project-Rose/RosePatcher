@@ -7,10 +7,10 @@
 This is Rosé Patcher! The Aroma plugin that revives Nintendo TVii icon from the Wii U Menu and HOME Menu, as well as the applet from inside!
 
 > [!NOTE]
-> Please note that some features in the TVii revival may not be ready, as it is currently in a beta state. For more information, please check out our website at https://projectrose.cafe/ and/or our Discord server at https://discord.gg/AaTsXndGun for more up-to-date information about our services!
+> Please note that some features in the TVii revival may not be ready, as it is currently in a beta state. For more information, please check out our website at https://projectrose.cafe and/or our Discord server at https://discord.gg/AaTsXndGun for more up-to-date information about our services!
 
 # Installation
-The easiest way to install Rosé Patcher is to download it from the [HB App Store](https://hb-app.store/) directly on the console!
+The easiest way to install Rosé Patcher is to download it from the [HB App Store](https://hb-app.store) directly on the console!
 
 [<img width="1080" height="300" alt="HB App Store shortcut link" src="https://github.com/user-attachments/assets/b665a650-9f9b-4db0-a980-c326a1da74b5" style="width:25%; height:auto;" />](https://hb-app.store/wiiu/RosePatcher)
 
@@ -39,6 +39,7 @@ We were not able to detect your console region automaticly. On your SD card, go 
 
 > [!NOTE]
 > If you need more support, or have any questions that are not answered here, please ask in our [Discord server](https://discord.gg/AaTsXndGu)!
+
 
 
 
