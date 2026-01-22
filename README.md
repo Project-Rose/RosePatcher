@@ -2,7 +2,7 @@
 # Rosé Patcher
 <img width="1000" height="250" alt="Rosé Patcher by Project Rosé (README banner)" src="https://github.com/user-attachments/assets/71c9b5e2-b006-4153-9992-f524a289038f" />
 
-[![GitHub release](https://img.shields.io/github/release/Project-Rose/RosePatcher.svg)](https://github.com/Project-Rose/RosePatcher/releases) [![Github all releases](https://img.shields.io/github/downloads/Project-Rose/RosePatcher/total.svg)](https://gitHub.com/Project-Rose/RosePatcher/releases/) [![GitHub license](https://badgen.net/github/license/Project-Rose/RosePatcher)](https://github.com/Project-Rose/RosePatcher/blob/master/LICENSE) [![Services Health](https://projectrose.montastic.io/badge)](https://projectrose.montastic.io) 
+[![GitHub release](https://img.shields.io/github/release/Project-Rose/RosePatcher.svg)](https://github.com/Project-Rose/RosePatcher/releases) [![Github all releases](https://img.shields.io/github/downloads/Project-Rose/RosePatcher/total.svg)](https://gitHub.com/Project-Rose/RosePatcher/releases) [![GitHub License](https://img.shields.io/github/license/Project-Rose/RosePatcher)](https://github.com/Project-Rose/RosePatcher/blob/master/LICENSE) [![Discord server](https://img.shields.io/discord/1277130014357327873?color=5865f2&label=Discord)](https://discord.gg/AaTsXndGun) [![Services Health](https://projectrose.montastic.io/badge)](https://projectrose.montastic.io) 
 
 This is Rosé Patcher! The Aroma plugin that revives Nintendo TVii icon from the Wii U Menu and HOME Menu, as well as the applet from inside!
 
@@ -12,7 +12,7 @@ This is Rosé Patcher! The Aroma plugin that revives Nintendo TVii icon from the
 # Installation
 The easiest way to install Rosé Patcher is to download it from the [HB App Store](https://hb-app.store) directly on the console!
 
-[<img width="1080" height="300" alt="HB App Store shortcut link" src="https://github.com/user-attachments/assets/b665a650-9f9b-4db0-a980-c326a1da74b5" style="width:25%; height:auto;" />](https://hb-app.store/wiiu/RosePatcher)
+[<img width="1080" height="300" alt="HB App Store shortcut link" src="https://github.com/user-attachments/assets/b665a650-9f9b-4db0-a980-c326a1da74b5" style="width:35%; height:auto;" />](https://hb-app.store/wiiu/RosePatcher)
 
 Alternatively, you can install it manually. Download the [latest release](https://github.com/Project-Rose/RosePatcher/releases) and place `RosePatcher.wps` in the Aroma plugins folder on your SD card (usually `sd:/wiiu/environments/aroma/plugins`).
 
@@ -39,6 +39,7 @@ We were not able to detect your console region automaticly. On your SD card, go 
 
 > [!NOTE]
 > If you need more support, or have any questions that are not answered here, please ask in our [Discord server](https://discord.gg/AaTsXndGu)!
+
 
 
 
