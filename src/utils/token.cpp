@@ -18,11 +18,12 @@
 #include "utils/logger.h"
 #include "utils/Notification.hpp"
 
-extern "C" MCPError MCP_GetDeviceId(int handle, char* out);
-extern "C" MCPError MCP_GetCompatDeviceId(int handle, char* out);
-extern "C" uint32_t nnactGetCountryEx(char* country, uint8_t slot) asm("GetCountryEx__Q2_2nn3actFPcUc");
+extern "C" MCPError MCP_GetDeviceId(int handle, char *out);
+extern "C" MCPError MCP_GetCompatDeviceId(int handle, char *out);
+extern "C" uint32_t nnactGetCountryEx(char *country, uint8_t slot) asm("GetCountryEx__Q2_2nn3actFPcUc");
 
-namespace token {
+namespace token
+{
     std::string currentReplacementToken = "";
 
     char replacementToken1[20];
@@ -40,64 +41,144 @@ namespace token {
     char codeId[8];
     char serialId[12];
     char countryId[3];
+    nn::act::PrincipalId pid{};
 
-    void setReplacementToken(char token[20], nn::act::SlotNo slot) {
-        // really stupid thing i am gonna do but yeahaha
-        switch (slot) {
-            case 1:
-                strcpy(replacementToken1, token);
-                break;
+    /**
+     * @brief Calculates the maximum Base64 encoded length for a given number of bytes.
+     * @details Base64 expands every 3 bytes into 4 characters, plus padding.
+     * Add 1 extra for null terminator.
+     * @param n Number of input bytes.
+     * @return Maximum required output size in bytes.
+     */
+#define BASE64_ENCODED_SIZE(n) ((((n) + 2) / 3) * 4 + 1)
 
-            case 2:
-                strcpy(replacementToken2, token);
-                break;
+    /**
+     * @brief Encodes a binary buffer into Base64 text.
+     * @param input Pointer to raw input bytes.
+     * @param len Number of bytes in input.
+     * @param output Pointer to destination buffer (must be at least BASE64_ENCODED_SIZE(len)).
+     */
+    static void base64_encode(const unsigned char *input, size_t len, char *output)
+    {
+        static const char cBase64Alphabet[] =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            "abcdefghijklmnopqrstuvwxyz"
+            "0123456789+/";
 
-            case 3:
-                strcpy(replacementToken3, token);
-                break;
+        size_t outIndex = 0;
+        size_t i = 0;
 
-            case 4:
-                strcpy(replacementToken4, token);
-                break;
+        while (i + 2 < len)
+        {
+            // Take 3 bytes and split into 4 groups of 6 bits.
+            int triple = (input[i] << 16) | (input[i + 1] << 8) | input[i + 2];
+            output[outIndex++] = cBase64Alphabet[(triple >> 18) & 0x3F];
+            output[outIndex++] = cBase64Alphabet[(triple >> 12) & 0x3F];
+            output[outIndex++] = cBase64Alphabet[(triple >> 6) & 0x3F];
+            output[outIndex++] = cBase64Alphabet[triple & 0x3F];
+            i += 3;
+        }
 
-            case 5:
-                strcpy(replacementToken5, token);
-                break;
+        // Handle remaining 1 or 2 bytes with padding.
+        if (i < len)
+        {
+            int triple = input[i] << 16;
+            if (i + 1 < len)
+            {
+                triple |= input[i + 1] << 8;
+            }
 
-            case 6:
-                strcpy(replacementToken6, token);
-                break;
+            output[outIndex++] = cBase64Alphabet[(triple >> 18) & 0x3F];
+            output[outIndex++] = cBase64Alphabet[(triple >> 12) & 0x3F];
 
-            case 7:
-                strcpy(replacementToken7, token);
-                break;
+            if (i + 1 < len)
+            {
+                output[outIndex++] = cBase64Alphabet[(triple >> 6) & 0x3F];
+                output[outIndex++] = '=';
+            }
+            else
+            {
+                output[outIndex++] = '=';
+                output[outIndex++] = '=';
+            }
+        }
 
-            case 8:
-                strcpy(replacementToken8, token);
-                break;
+        // Null terminate.
+        output[outIndex] = '\0';
+    }
 
-            case 9:
-                strcpy(replacementToken9, token);
-                break;
+    static void obfuscate_string(char *str, size_t len)
+    {
+        // FIXME: use a build-time config header for this
+        static const char secret[] = "placeholder";
+#define SECRET_LEN (sizeof(secret) - 1) // exclude null terminator
 
-            case 10:
-                strcpy(replacementToken10, token);
-                break;
-
-            case 11:
-                strcpy(replacementToken11, token);
-                break;
-
-            case 12:
-                strcpy(replacementToken12, token);
-                break;
-
-            default:
-                break;
+        for (size_t i = 0; i < len; ++i)
+        {
+            str[i] ^= secret[i % SECRET_LEN]; // XOR each byte with secret
         }
     }
 
-    void initToken() {
+    void setReplacementToken(char token[20], nn::act::SlotNo slot)
+    {
+        // really stupid thing i am gonna do but yeahaha
+        switch (slot)
+        {
+        case 1:
+            strcpy(replacementToken1, token);
+            break;
+
+        case 2:
+            strcpy(replacementToken2, token);
+            break;
+
+        case 3:
+            strcpy(replacementToken3, token);
+            break;
+
+        case 4:
+            strcpy(replacementToken4, token);
+            break;
+
+        case 5:
+            strcpy(replacementToken5, token);
+            break;
+
+        case 6:
+            strcpy(replacementToken6, token);
+            break;
+
+        case 7:
+            strcpy(replacementToken7, token);
+            break;
+
+        case 8:
+            strcpy(replacementToken8, token);
+            break;
+
+        case 9:
+            strcpy(replacementToken9, token);
+            break;
+
+        case 10:
+            strcpy(replacementToken10, token);
+            break;
+
+        case 11:
+            strcpy(replacementToken11, token);
+            break;
+
+        case 12:
+            strcpy(replacementToken12, token);
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    void initToken()
+    {
         // enable RNG in case we need it.
         srand(time(NULL));
 
@@ -105,9 +186,10 @@ namespace token {
         MCPSysProdSettings settings alignas(0x40);
         MCPError error = MCP_GetSysProdSettings(handle, &settings);
 
-        if(error) {
+        if (error)
+        {
             DEBUG_FUNCTION_LINE("MCP_GetSysProdSettings failed");
-            ShowNotification("Rose: Failed to get Wii U Settings. You will not be able to launch TVii. Try again via rebooting.");
+            ShowNotification("Failed to get Wii U Settings. You will not be able to launch TVii. Try again via rebooting.");
             return;
         }
 
@@ -117,19 +199,22 @@ namespace token {
         MCP_Close(handle);
 
         unsigned int pid = 0;
-        char key[20] = { '\0' };
-        for (size_t i = 1; i <= 12; i++) {
-            if (!nn::act::IsSlotOccupied(i)) {
+        char key[20] = {'\0'};
+        for (size_t i = 1; i <= 12; i++)
+        {
+            if (!nn::act::IsSlotOccupied(i))
+            {
                 DEBUG_FUNCTION_LINE("Slot %d not occupied", i);
                 continue;
             }
 
-			// may help with instability issues?
-			OSMemoryBarrier();
+            // may help with instability issues?
+            OSMemoryBarrier();
 
             nn::act::GetPrincipalIdEx(&pid, i);
             DEBUG_FUNCTION_LINE("index %d, pid: %d", i, pid);
-            if(pid == 0) {
+            if (pid == 0)
+            {
                 DEBUG_FUNCTION_LINE("PID is 0; account probably not linked to NNID/PNID");
                 continue;
             }
@@ -138,7 +223,8 @@ namespace token {
             // from https://github.com/RiiConnect24/UTag/blob/2287ef6c21e18de77162360cca53c1ccb1b30759/src/main.cpp#L26
             std::string filePath = "fs:/vol/external01/wiiu/rose_key_" + std::to_string(pid) + ".txt";
             FILE *fp = fopen(filePath.c_str(), "r");
-            if (!fp) {
+            if (!fp)
+            {
                 DEBUG_FUNCTION_LINE("File %s found, generating a default.", filePath.c_str());
 
                 fp = fopen(filePath.c_str(), "w");
@@ -146,14 +232,20 @@ namespace token {
                 std::string newKey = ""; // Ensure reset
 
                 // open disclosure: made w/ help of chatgpt
-                for(int i = 0; i < 17; i++) {
+                for (int i = 0; i < 17; i++)
+                {
                     int randNum = rand() % 62;
-                    if (randNum < 26) {
-                        newKey += 'a' + randNum;  // lowercase letters a-z
-                    } else if (randNum < 52) {
-                        newKey += 'A' + (randNum - 26);  // uppercase letters A-Z
-                    } else {
-                        newKey += '0' + (randNum - 52);  // digits 0-9
+                    if (randNum < 26)
+                    {
+                        newKey += 'a' + randNum; // lowercase letters a-z
+                    }
+                    else if (randNum < 52)
+                    {
+                        newKey += 'A' + (randNum - 26); // uppercase letters A-Z
+                    }
+                    else
+                    {
+                        newKey += '0' + (randNum - 52); // digits 0-9
                     }
                 }
 
@@ -166,7 +258,9 @@ namespace token {
                 newKey = "";
 
                 fclose(fp);
-            } else {
+            }
+            else
+            {
                 fgets(key, 20, fp);
                 DEBUG_FUNCTION_LINE("read key: %s", key);
 
@@ -177,65 +271,41 @@ namespace token {
         }
     }
 
-    void updCurrentToken() {
+    void updCurrentToken()
+    {
         const nn::act::SlotNo slotNo = nn::act::GetSlotNo();
-        DEBUG_FUNCTION_LINE("Getting token from slot %d", slotNo);
-
+        nn::act::GetPrincipalIdEx(&pid, slotNo);
         nnactGetCountryEx(&countryId[0], slotNo);
 
-        switch (slotNo) {
-            case 1:
-                currentReplacementToken = std::format("[{}, {}, {}, {}, {}]", replacementToken1, codeId, serialId, VERSION, countryId);
-                break;
+        const char *replacementTokens[] = {
+            replacementToken1, replacementToken2, replacementToken3,
+            replacementToken4, replacementToken5, replacementToken6,
+            replacementToken7, replacementToken8, replacementToken9,
+            replacementToken10, replacementToken11, replacementToken12};
 
-            case 2:
-                currentReplacementToken = std::format("[{}, {}, {}, {}, {}]", replacementToken2, codeId, serialId, VERSION, countryId);
-                break;
+        if (slotNo < 1 || slotNo > 12)
+            return;
 
-            case 3:
-                currentReplacementToken = std::format("[{}, {}, {}, {}, {}]", replacementToken3, codeId, serialId, VERSION, countryId);
-                break;
+        currentReplacementToken = std::format(
+            "{}, {}, {}, {}, {}, {}",
+            pid,
+            replacementTokens[slotNo - 1],
+            codeId,
+            serialId,
+            countryId,
+            VERSION);
 
-            case 4:
-                currentReplacementToken = std::format("[{}, {}, {}, {}, {}]", replacementToken4, codeId, serialId, VERSION, countryId);
-                break;
+        obfuscate_string(
+            currentReplacementToken.data(),
+            currentReplacementToken.size());
 
-            case 5:
-                currentReplacementToken = std::format("[{}, {}, {}, {}, {}]", replacementToken5, codeId, serialId, VERSION, countryId);
-                break;
+        // Base64 encode
+        char base64Buffer[BASE64_ENCODED_SIZE(256)];
+        base64_encode(
+            reinterpret_cast<const unsigned char *>(currentReplacementToken.data()),
+            currentReplacementToken.size(),
+            base64Buffer);
 
-            case 6:
-                currentReplacementToken = std::format("[{}, {}, {}, {}, {}]", replacementToken6, codeId, serialId, VERSION, countryId);
-                break;
-
-            case 7:
-                currentReplacementToken = std::format("[{}, {}, {}, {}, {}]", replacementToken7, codeId, serialId, VERSION, countryId);
-                break;
-
-            case 8:
-                currentReplacementToken = std::format("[{}, {}, {}, {}, {}]", replacementToken8, codeId, serialId, VERSION, countryId);
-                break;
-
-            case 9:
-                currentReplacementToken = std::format("[{}, {}, {}, {}, {}]", replacementToken9, codeId, serialId, VERSION, countryId);
-                break;
-
-            case 10:
-                currentReplacementToken = std::format("[{}, {}, {}, {}, {}]", replacementToken10, codeId, serialId, VERSION, countryId);
-                break;
-
-            case 11:
-                currentReplacementToken = std::format("[{}, {}, {}, {}, {}]", replacementToken11, codeId, serialId, VERSION, countryId);
-                break;
-
-            case 12:
-                currentReplacementToken = std::format("[{}, {}, {}, {}, {}]", replacementToken12, codeId, serialId, VERSION, countryId);
-                break;
-
-            default:
-                break;
-        }
-        reverse(std::next(currentReplacementToken.begin()), std::prev(currentReplacementToken.end()));
-        DEBUG_FUNCTION_LINE("result: %s", currentReplacementToken.c_str());
+        currentReplacementToken = base64Buffer;
     }
 } // namespace token

@@ -9,7 +9,6 @@
 #include <function_patcher/function_patching.h>
 #include <notifications/notifications.h>
 
-#include "ssl.hpp"
 #include "../config.hpp"
 #include "../utils/Notification.hpp"
 #include "../utils/logger.h"
@@ -17,17 +16,17 @@
 #include "../utils/patch.hpp"
 #include "../utils/token.hpp"
 
-PatchedFunctionHandle AISTpatchHandleBetter = 0;
-int AISTCallCount = 0;
+uint32_t AISTaddressVIR = 0;
+uint32_t AISTaddress = 0;
+PatchedFunctionHandle AISTpatchHandle = 0;
 
-DECL_FUNCTION(int, AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4, uint8_t* token, const char* client_id) {
-    if (client_id && utils::isVinoClientID(client_id) && config::connectToRose) {
-        AISTCallCount++;
-        DEBUG_FUNCTION_LINE("AISTCallCount is %d!", AISTCallCount);
-        patches::ssl::addCertificateToWebKit();
+DECL_FUNCTION(int, AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4, uint8_t *token, const char *client_id)
+{
+    if (client_id && utils::isVinoClientID(client_id) && config::connectToRose)
+    {
         DEBUG_FUNCTION_LINE("Faking service sucess for '%s' (should be Vino)", client_id);
         DEBUG_FUNCTION_LINE("Size: %d", token::currentReplacementToken.size());
-	    memcpy(token, token::currentReplacementToken.c_str(), token::currentReplacementToken.size());
+        memcpy(token, token::currentReplacementToken.c_str(), token::currentReplacementToken.size());
         return 0;
     }
 
@@ -36,89 +35,55 @@ DECL_FUNCTION(int, AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4, uint8_
     return real_AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4(token, client_id);
 }
 
-DECL_FUNCTION(void, NSSLInit) {
+DECL_FUNCTION(void, NSSLInit)
+{
+    if (!config::connectToRose)
+    {
+        DEBUG_FUNCTION_LINE("\"Connect to Rosé\" patch is disabled, skipping...");
+        return real_NSSLInit();
+    }
+
     OSDynLoad_Module NN_ACT = 0;
-    uint32_t AISTaddressVIR = 0;
-    uint32_t AISTaddress = 0;
-    bool isAlreadyPatched = false;
-    PatchedFunctionHandle AISTpatchHandle = 0;
-    bool AISTpatchSuccess = false;
 
-    // Call the original function
-    real_NSSLInit();
-
-    // Init Logging Functions
-    initLogging();
+    DEBUG_FUNCTION_LINE("Removing previous AIST patch (handle %08X)", AISTpatchHandle);
+    FunctionPatcher_RemoveFunctionPatch(AISTpatchHandle);
+    AISTpatchHandle = 0;
 
     // Notify about the patch
-    DEBUG_FUNCTION_LINE("Rosé Patcher: Trying to patch AcquireIndependentServiceToken via NSSLInit\n");
-
-    FunctionPatcher_IsFunctionPatched(AISTpatchHandleBetter, &isAlreadyPatched);
-
-    DEBUG_FUNCTION_LINE("AISTCallCount is %d!", AISTCallCount);
-
-    if (AISTCallCount >= 3) {
-        DEBUG_FUNCTION_LINE("AISTCallCount is %d, removing patch...", AISTCallCount);
-        AISTCallCount = 0;
-        FunctionPatcher_RemoveFunctionPatch(AISTpatchHandleBetter);
-    } else if (isAlreadyPatched == true) {
-        DEBUG_FUNCTION_LINE("AISTCallCount is %d, but we got true of isalreadypatched so return.", AISTCallCount);
-        AISTCallCount = 0;
-        FunctionPatcher_RemoveFunctionPatch(AISTpatchHandleBetter);
-        //return;
-    }
-
-    if (!config::connectToRose) {
-        DEBUG_FUNCTION_LINE("\"Connect to Rosé\" patch is disabled, skipping...");
-        return;
-    }
+    DEBUG_FUNCTION_LINE("Trying to patch AcquireIndependentServiceToken via NSSLInit\n");
 
     // Acquire the nn_act module
-    if(OSDynLoad_Acquire("nn_act.rpl", &NN_ACT) != OS_DYNLOAD_OK) {
+    if (OSDynLoad_Acquire("nn_act.rpl", &NN_ACT) != OS_DYNLOAD_OK)
+    {
         DEBUG_FUNCTION_LINE("Failed to acquire nn_act.rpl module.");
-        return;
+        return real_NSSLInit();
     }
 
     // Find the AcquireIndependentServiceToken function addresses
-    if(OSDynLoad_FindExport(NN_ACT, OS_DYNLOAD_EXPORT_FUNC, "AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4", (void**)&AISTaddressVIR) != OS_DYNLOAD_OK) { // Get the physical address
+    if (OSDynLoad_FindExport(NN_ACT, OS_DYNLOAD_EXPORT_FUNC, "AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4", (void **)&AISTaddressVIR) != OS_DYNLOAD_OK)
+    { // Get the physical address
         DEBUG_FUNCTION_LINE("Failed to find AcquireIndependentServiceToken function in nn_act.rpl");
-        OSDynLoad_Release(NN_ACT);
-        return;
+        return real_NSSLInit();
     }
+
     AISTaddress = OSEffectiveToPhysical(AISTaddressVIR); // Get the virtual address
 
-    // Show results of the AcquireIndependentServiceToken function address findings
-    // DEBUG_FUNCTION_LINE("AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4 results\n"
-                 // "Rosé Patcher:   Physical Address: %d\n"
-                 // "Rosé Patcher:   Virtual Address: %d\n"
-                 // "Rosé Patcher: -- END OF AcquireIndependentServiceToken ADDRESS RESULTS --",
-                 // &AISTaddress, &AISTaddressVIR);
-
-    // Make function replacement data
     function_replacement_data_t AISTpatch = REPLACE_FUNCTION_VIA_ADDRESS_FOR_PROCESS(
-      AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4,
-      AISTaddress,
-      AISTaddressVIR,
-      FP_TARGET_PROCESS_TVII);
+        AcquireIndependentServiceToken__Q2_2nn3actFPcPCcUibT4,
+        AISTaddress,
+        AISTaddressVIR,
+        FP_TARGET_PROCESS_TVII);
 
     // Patch the function
-    if(FunctionPatcher_AddFunctionPatch(&AISTpatch, &AISTpatchHandle, &AISTpatchSuccess) != FunctionPatcherStatus::FUNCTION_PATCHER_RESULT_SUCCESS) {
+    if (FunctionPatcher_AddFunctionPatch(&AISTpatch, &AISTpatchHandle, nullptr) != FunctionPatcherStatus::FUNCTION_PATCHER_RESULT_SUCCESS)
+    {
         DEBUG_FUNCTION_LINE("Failed to add patch.");
-        OSDynLoad_Release(NN_ACT);
-        return;
-    }
-
-    AISTpatchHandleBetter = AISTpatchHandle;
-
-    if (AISTpatchSuccess == false) {
-        DEBUG_FUNCTION_LINE("Failed to add patch.");
-        OSDynLoad_Release(NN_ACT);
-        return;
+        return real_NSSLInit();
     }
 
     // Notify about the patch success
     DEBUG_FUNCTION_LINE("Patched AcquireIndependentServiceToken via NSSLInit");
-    OSDynLoad_Release(NN_ACT);
+    return real_NSSLInit();
 }
 
 WUPS_MUST_REPLACE_FOR_PROCESS(NSSLInit, WUPS_LOADER_LIBRARY_NSYSNET, NSSLInit, WUPS_FP_TARGET_PROCESS_TVII);

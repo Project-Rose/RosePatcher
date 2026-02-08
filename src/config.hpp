@@ -22,7 +22,7 @@
 #define FORCE_JPN_CONSOLE_CONFIG_ID "force_jpn_console"
 #define FORCE_JPN_CONSOLE_DEFAULT_VALUE false
 
-#define VERSION "v1.2.5"
+#define VERSION "v1.2.6"
 
 namespace config {
 
@@ -31,7 +31,6 @@ namespace config {
     extern bool tviiIconWUM;
     extern bool needRelaunch;
     extern bool forceJPNconsole;
-    extern bool certificateAdded;
     extern bool gtsAdded;
     extern bool enableRemindPoll;
 

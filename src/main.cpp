@@ -25,9 +25,12 @@ WUPS_PLUGIN_LICENSE("GPLv2");
 WUPS_USE_STORAGE("rosepatcher");
 WUPS_USE_WUT_DEVOPTAB();
 
-INITIALIZE_PLUGIN() {
+INITIALIZE_PLUGIN()
+{
   // Initialize libraries
   initLogging();
+  nn::ac::Initialize();
+  nn::ac::ConnectAsync();
   nn::act::Initialize();
   FunctionPatcher_InitLibrary();
 
@@ -37,18 +40,23 @@ INITIALIZE_PLUGIN() {
   token::initToken();
 
   // Check if NotificationModule library is initialized
-  if (NotificationModule_InitLibrary() != NOTIFICATION_MODULE_RESULT_SUCCESS) {
+  if (NotificationModule_InitLibrary() != NOTIFICATION_MODULE_RESULT_SUCCESS)
+  {
     DEBUG_FUNCTION_LINE("NotificationModule_InitLibrary failed");
   }
 
-  if (config::connectToRose) {
+  if (config::connectToRose)
+  {
     ShowNotification("Rosé patch enabled");
-  } else {
+  }
+  else
+  {
     ShowNotification("Rosé patch disabled");
   }
 }
 
-DEINITIALIZE_PLUGIN() {
+DEINITIALIZE_PLUGIN()
+{
   curl_global_cleanup();
   patches::icon::perform_hbm_patches(false);
 
@@ -58,48 +66,43 @@ DEINITIALIZE_PLUGIN() {
   FunctionPatcher_DeInitLibrary();
 }
 
-ON_APPLICATION_START() {
-  initLogging();
-
-  nn::ac::Initialize();
-  nn::ac::ConnectAsync();
-  nn::act::Initialize();
-
+ON_APPLICATION_START()
+{
   token::updCurrentToken();
 
   auto title = OSGetTitleID();
-  if (config::tviiIconWUM) {
-    if (title == 0x5001010040000 || title == 0x5001010040100 || title == 0x5001010040200) {
+  if (config::tviiIconWUM)
+  {
+    if (title == 0x5001010040000 || title == 0x5001010040100 || title == 0x5001010040200)
+    {
       patches::icon::perform_men_patches(true);
     }
   }
-
-  if (config::enableRemindPoll) {
-      reminderpoller::CreateReminderPoller();
-  }
 }
 
-ON_APPLICATION_ENDS() {
+ON_APPLICATION_ENDS()
+{
   auto title = OSGetTitleID();
-  if (title == 0x5001010040000 || title == 0x5001010040100 || title == 0x5001010040200) {
+  if (title == 0x5001010040000 || title == 0x5001010040100 || title == 0x5001010040200)
+  {
     patches::icon::perform_men_patches(false);
   }
 
-  if (config::enableRemindPoll) {
+  if (config::enableRemindPoll)
+  {
     reminderpoller::should_kill = true;
   }
 }
 
 // ensure we update
-DECL_FUNCTION(nn::Result, LoadConsoleAccount__Q2_2nn3actFUc13ACTLoadOptionPCcb, nn::act::SlotNo slot, nn::act::ACTLoadOption unk1, char const * unk2, bool unk3) {
+DECL_FUNCTION(nn::Result, LoadConsoleAccount__Q2_2nn3actFUc13ACTLoadOptionPCcb, nn::act::SlotNo slot, nn::act::ACTLoadOption unk1, char const *unk2, bool unk3)
+{
   // we should load first
   nn::Result ret = real_LoadConsoleAccount__Q2_2nn3actFUc13ACTLoadOptionPCcb(slot, unk1, unk2, unk3);
 
   // Could be a new or removed user. TODO: isolate which function new users are called/deleted
   token::initToken();
-
   token::updCurrentToken();
-
   return ret;
 }
 
