@@ -25,8 +25,8 @@ Hold L + Down + Start to open the Wii U Plugin Menu, then scroll down and click 
 An Aroma notification should tell you if the patch is enabled every time you boot up your console.
 
 # Credits
-- [Cooper](https://github.com/coopeeo) ([@coopeeo](https://github.com/coopeeo)): Lead Plugin Developer - TVii Config, Acquire Independent Service Token (absolute hell), and plugin settings.
-- [Swirlz](https://github.com/itzswirlz) ([@ItzSwirlz](https://github.com/itzswirls)): Plugin Developer - Helped a lot with issues that the person above had.
+- [August](https://github.com/coopeeo) ([@coopeeo](https://github.com/coopeeo)): Lead Plugin Developer - TVii Config, Acquire Independent Service Token (absolute hell), and plugin settings.
+- [Swirlz](https://github.com/jpeisach) ([@JPeisach](https://github.com/jpeisach)): Plugin Developer - Helped a lot with issues that the person above had.
 - [darcellapy](https://github.com/darcellapy) ([@darcellapy](https://github.com/darcellapy)): For the original [Vino Config Patcher](https://github.com/darcellapy/vino-config-patcher-plugin).
 - [Pretendo Network](https://pretendo.network) and [Ash](https://github.com/ashquarky) ([@ashquarky](https://github.com/ashquarky)): for CI/Building with GitHub Actions. (Note: we are **not** affiliated with Pretendo, nor do they endorse us. We simply took the things that Ash did and replicated it here).
 - All the people in the Aroma Discord Server (to help the developers understand what they are doing).
