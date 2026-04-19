@@ -47,11 +47,11 @@ INITIALIZE_PLUGIN()
 
   if (config::connectToRose)
   {
-    ShowNotification("Rosé patch enabled");
+    ShowNotification("Rosé patch for TVii enabled");
   }
   else
   {
-    ShowNotification("Rosé patch disabled");
+    ShowNotification("Rosé patch for TVii disabled");
   }
 }
 

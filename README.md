@@ -10,6 +10,11 @@ This is Rosé Patcher! The Aroma plugin that revives Nintendo TVii icon from the
 > Please note that some features in the TVii revival may not be ready, as it is currently in a beta state. For more information, please check out our website at https://projectrose.cafe and/or our Discord server at https://discord.gg/AaTsXndGun for more up-to-date information about our services!
 
 # Installation
+Rosé Patcher requires a homebrewed Wii U on the [Aroma](https://github.com/wiiu-env/Aroma) environment. If you haven't already, homebrew your Wii U using [this guide](https://wiiu.hacks.guide/)!
+
+> [!IMPORTANT]
+> Make sure you are on the latest version of Aroma, as older versions may cause compatibility issues. If your Wii U is consistently crashing or failing to boot up, it's likely the culprit. The current version of Rosé Patcher is confirmed to work normally with Aroma 25 or later.
+
 The easiest way to install Rosé Patcher is to download it from the [HB App Store](https://hb-app.store) directly on the console!
 
 [<img width="1080" height="300" alt="HB App Store shortcut link" src="https://github.com/user-attachments/assets/b665a650-9f9b-4db0-a980-c326a1da74b5" style="width:35%; height:auto;" />](https://hb-app.store/wiiu/RosePatcher)
