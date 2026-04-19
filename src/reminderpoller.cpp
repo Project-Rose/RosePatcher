@@ -27,8 +27,11 @@ namespace reminderpoller {
         CURL *curl = curl_easy_init();
         while(true) {
             if(curl) {
+<<<<<<< HEAD
                 OSTime time = OSGetTime();
 
+=======
+>>>>>>> 2bfae3e (aroma updated and i hate my life)
 				// TODO: URL at configure time
                 curl_easy_setopt(curl, CURLOPT_URL, "https://projectrose.cafe/placeholder/lmao");
 				curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback);
